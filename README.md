@@ -1,7 +1,7 @@
 # Reddit Clone
 
 <div align="center">
-  <img src="https://github.com/Arshnoor-Singh-Sohi/Reddit/assets/icon/icon.png" alt="Reddit Clone Logo" width="200"/>
+  <img src="[https://github.com/Arshnoor-Singh-Sohi/Reddit/assets/icon/](https://github.com/Arshnoor-Singh-Sohi/Reddit/tree/main/assets/icon)icon.png" alt="Reddit Clone Logo" width="200"/>
   <h3>A full-featured Reddit clone built with Flutter and Firebase</h3>
 </div>
 
