@@ -5,9 +5,167 @@
   <h3>A full-featured Reddit clone built with Flutter and Firebase</h3>
 </div>
 
+# Reddit Clone Architecture
+```mermaid
+flowchart TB
+    %% Platforms Boundary
+    subgraph "Platforms Boundary" 
+        direction TB
+        Android["Android"]:::external
+        iOS["iOS"]:::external
+        Web["Web"]:::external
+        Linux["Linux"]:::external
+        macOS["macOS"]:::external
+        Windows["Windows"]:::external
+    end
+
+    Android -->|hosts| FlutterApp
+    iOS -->|hosts| FlutterApp
+    Web -->|hosts| FlutterApp
+    Linux -->|hosts| FlutterApp
+    macOS -->|hosts| FlutterApp
+    Windows -->|hosts| FlutterApp
+
+    FlutterApp["Flutter App"]:::ui
+
+    %% UI Layer
+    subgraph "UI Layer" 
+        direction TB
+        AuthScreens["Auth Screens"]:::ui
+        CommunityScreens["Community Screens"]:::ui
+        FeedScreen["Feed Screen"]:::ui
+        PostScreens["Post Screens"]:::ui
+        UserProfileScreens["User Profile Screens"]:::ui
+        HomeScreens["Home Screen & Drawers"]:::ui
+        CoreWidgets["Core Widgets"]:::ui
+        Responsive["Responsive Utility"]:::ui
+        ThemeUtil["Theme Utility"]:::ui
+        Router["Routing (Routemaster)"]:::ui
+    end
+
+    FlutterApp -->|"renders"| AuthScreens
+    FlutterApp -->|"renders"| CommunityScreens
+    FlutterApp -->|"renders"| FeedScreen
+    FlutterApp -->|"renders"| PostScreens
+    FlutterApp -->|"renders"| UserProfileScreens
+    FlutterApp -->|"renders"| HomeScreens
+    FlutterApp -->|"uses"| CoreWidgets
+    FlutterApp -->|"uses"| Responsive
+    FlutterApp -->|"uses"| ThemeUtil
+    FlutterApp -->|"uses"| Router
+
+    %% Business Layer
+    subgraph "Business Layer" 
+        direction TB
+        AuthController["AuthController"]:::business
+        CommunityController["CommunityController"]:::business
+        PostController["PostController"]:::business
+        UserProfileController["UserProfileController"]:::business
+        ThemeNotifier["ThemeNotifier"]:::business
+    end
+
+    AuthScreens -->|calls| AuthController
+    CommunityScreens -->|calls| CommunityController
+    FeedScreen -->|calls| PostController
+    PostScreens -->|calls| PostController
+    UserProfileScreens -->|calls| UserProfileController
+    HomeScreens -->|calls| ThemeNotifier
+
+    %% Data Layer
+    subgraph "Data Layer"
+        direction TB
+        AuthRepo["AuthRepository"]:::data
+        CommunityRepo["CommunityRepository"]:::data
+        PostRepo["PostRepository"]:::data
+        UserProfileRepo["UserProfileRepository"]:::data
+        StorageRepo["StorageRepository"]:::data
+    end
+
+    AuthController -->|uses| AuthRepo
+    CommunityController -->|uses| CommunityRepo
+    PostController -->|uses| PostRepo
+    UserProfileController -->|uses| UserProfileRepo
+    PostController -->|uploads images to| StorageRepo
+
+    %% Firebase Layer
+    subgraph "Firebase Layer"
+        direction TB
+        FirebaseAuth["FirebaseAuth"]:::firebase
+        FirestoreSDK["FirebaseFirestore"]:::firebase
+        StorageSDK["FirebaseStorage"]:::firebase
+        FireOptions["firebase_options.dart"]:::firebase
+        FirebaseConsts["Firebase Constants"]:::firebase
+        GoogleSignIn["Google Sign-In"]:::external
+    end
+
+    AuthRepo -->|auth calls| FirebaseAuth
+    AuthRepo -->|oauth| GoogleSignIn
+    AuthRepo -->|reads/writes| FirestoreSDK
+    CommunityRepo -->|CRUD| FirestoreSDK
+    PostRepo -->|CRUD| FirestoreSDK
+    UserProfileRepo -->|CRUD| FirestoreSDK
+    StorageRepo -->|uploads/downloads| StorageSDK
+
+    FireOptions -->|configures| FirebaseAuth
+    FireOptions -->|configures| FirestoreSDK
+    FireOptions -->|configures| StorageSDK
+    FirebaseConsts -->|defines collections| FirestoreSDK
+
+    FirestoreSDK -->|streams| PostController
+    FirestoreSDK -->|streams| CommunityController
+    FirestoreSDK -->|streams| UserProfileController
+
+    %% External Hosting
+    subgraph "External Services"
+        FirebaseHosting["Firebase Hosting / Vercel"]:::external
+    end
+    Web -->|deployed on| FirebaseHosting
+
+    %% Click Events
+    click AuthScreens "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/auth/screens/login_screen.dart"
+    click CommunityScreens "https://github.com/arshnoor-singh-sohi/reddit/tree/main/lib/features/community/screens/"
+    click FeedScreen "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/feed/feed_screen.dart"
+    click PostScreens "https://github.com/arshnoor-singh-sohi/reddit/tree/main/lib/features/post/screens/"
+    click UserProfileScreens "https://github.com/arshnoor-singh-sohi/reddit/tree/main/lib/features/user_profile/screens/"
+    click HomeScreens "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/home/screens/home_screen.dart"
+    click HomeScreens "https://github.com/arshnoor-singh-sohi/reddit/tree/main/lib/features/home/drawers/"
+    click CoreWidgets "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/core/common/post_card.dart"
+    click CoreWidgets "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/core/common/loader.dart"
+    click CoreWidgets "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/core/common/sign_in_button.dart"
+    click CoreWidgets "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/core/common/error_text.dart"
+    click Responsive "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/responsive/responsive.dart"
+    click ThemeUtil "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/theme/pallete.dart"
+    click Router "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/router.dart"
+    click AuthController "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/auth/controller/auth_controller.dart"
+    click CommunityController "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/community/controller/community_controller.dart"
+    click PostController "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/post/controller/post_controller.dart"
+    click UserProfileController "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/user_profile/controller/user_profile_controller.dart"
+    click AuthRepo "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/auth/repository/auth_repository.dart"
+    click CommunityRepo "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/community/repository/community_repository.dart"
+    click PostRepo "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/post/respository/post_repository.dart"
+    click UserProfileRepo "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/features/user_profile/repository/user_profile_repository.dart"
+    click StorageRepo "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/core/providers/storage_repository_provider.dart"
+    click FireOptions "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/firebase_options.dart"
+    click FirebaseConsts "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/core/constants/firebase_constant.dart"
+    click FirebaseAuth "https://github.com/arshnoor-singh-sohi/reddit/blob/main/lib/core/providers/firebase_providers.dart"
+
+    %% Styles
+    classDef ui fill:#D0E8FF,stroke:#0366D6,color:#0366D6
+    classDef business fill:#E2F0D9,stroke:#1B7F4F,color:#1B7F4F
+    classDef data fill:#FFE7C6,stroke:#D97700,color:#D97700
+    classDef firebase fill:#F3E8FF,stroke:#7C3AED,color:#7C3AED
+    classDef external fill:#EEEEEE,stroke:#999999,color:#333333
+
+
+```
+
+
+
+
 ## 📱 Live Demo
 
 Check out the deployed app: [Reddit Clone Live Demo](https://jotion-theta.vercel.app/)
+
 
 ## 📋 Table of Contents
 
