@@ -6,6 +6,54 @@
 </div>
 
 # Reddit Clone Architecture
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter">
+  <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase">
+  <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart">
+</div>
+
+<p align="center">This architecture diagram illustrates the layered design of our Reddit clone, showing the separation of concerns and component interactions.</p>
+
+<div align="center">
+  <kbd>
+    <img src="path/to/your/diagram.png" alt="Reddit Clone Architecture" width="90%">
+  </kbd>
+</div>
+
+<div align="center">
+  <details>
+    <summary><b>View Layer Legend</b></summary>
+    <table>
+      <tr>
+        <td>🟦 UI Components</td>
+        <td>🟩 Business Logic</td>
+        <td>🟧 Data Layer</td>
+        <td>🟪 Firebase Services</td>
+      </tr>
+    </table>
+  </details>
+</div>
+
+## ✨ Key Architecture Features
+
+- 📱 **Cross-Platform Support**: Runs on Android, iOS, Web, macOS, Linux, and Windows
+- 🔄 **State Management**: Riverpod for reactive state management 
+- 🔌 **Repository Pattern**: Clean separation between data sources and business logic
+- 🔐 **Firebase Integration**: Authentication, Firestore, and Storage
+- 📐 **Responsive Design**: Adapts to different screen sizes and orientations
+
+<details>
+  <summary><b>🎨 UI Layer</b></summary>
+  
+  The UI Layer contains all screens and reusable widgets organized by feature:
+  
+  - **Auth Screens**: Login and signup interfaces
+  - **Community Screens**: Community creation and management
+  - **Feed Screen**: Main scrollable content feed
+  - **Post Screens**: Post creation, viewing, and interaction
+  - **User Profile Screens**: Profile management and viewing
+</details>
 ```mermaid
 flowchart TB
     %% Platforms Boundary
