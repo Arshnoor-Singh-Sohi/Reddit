@@ -54,6 +54,7 @@
   - **Post Screens**: Post creation, viewing, and interaction
   - **User Profile Screens**: Profile management and viewing
 </details>
+
 ```mermaid
 flowchart TB
     %% Platforms Boundary
