@@ -15,11 +15,7 @@
 
 <p align="center">This architecture diagram illustrates the layered design of our Reddit clone, showing the separation of concerns and component interactions.</p>
 
-<div align="center">
-  <kbd>
-    <img src="path/to/your/diagram.png" alt="Reddit Clone Architecture" width="90%">
-  </kbd>
-</div>
+
 
 <div align="center">
   <details>
